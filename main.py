@@ -21,15 +21,22 @@ def main(input_str: str) -> tuple[int, str]:
     table = [[]]
 
     # base case: both strings are empty
-    for i in range(len(A)):
+    for i in range(len(A) + 1):
         table[i][0] = 0
     
-    for j in range(len(B)):
+    for j in range(len(B) + 1):
         table[0][j] = 0
 
     
-    for i in range(len(A)):
-        for j in range(len(B)):
+    for i in A:
+        for j in B:
+            if i == j:
+                table[i+1][j+1] = str_dict[i] # one indexed because of the base cases
+            else:
+                table[i+1][j+1] = max(table[i][j+1], table[i+1][j])
+        
+
+            
 
 
 
