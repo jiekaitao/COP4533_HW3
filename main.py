@@ -7,8 +7,8 @@ def parse_input(input_str: str) -> tuple[int, str, str, dict[str, int]]:
         temp_row = lines[i].split(" ")
         str_dict[temp_row[0]] = int(temp_row[1])
     
-    A = lines[K-1]
-    B = lines[K]
+    A = lines[-2]
+    B = lines[-1]
 
     return K, A, B, str_dict
 
@@ -38,6 +38,27 @@ def main(input_str: str) -> tuple[int, str]:
                 table[i+1][j+1] = table[i][j] + str_dict[A[i]] # one indexed because of the base cases
             else:
                 table[i+1][j+1] = max(table[i][j+1], table[i+1][j])
+
+    # now backtrack
+    i_ptr = len(A)
+    j_ptr = len(B)
+    max_value = table[len(A)][len(B)] # just the bottom right value because it represents using all of A and all of B
+
+    subsequence = ""
+
+    while((i_ptr != 0) and (j_ptr != 0)):
+        if(A[i_ptr-1] == B[j_ptr-1]):
+            subsequence += A[i_ptr-1]
+            i_ptr -= 1
+            j_ptr -= 1
+        else:
+            if (table[i_ptr-1][j_ptr] > table[i_ptr][j_ptr-1]):
+                # the cell above is better than the one on the left
+                i_ptr -= 1
+            else:
+                j_ptr -= 1
+
+    return max_value, subsequence[::-1]
         
 
             
